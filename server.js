@@ -18,7 +18,7 @@ app.use(express.json());
 var friendsArray = [
     {
         name: "Pat Smith",
-        photo: "",
+        photo: "https://ak2.picdn.net/shutterstock/videos/10498112/thumb/1.jpg",
         scores: [
             "3",
             "2",
@@ -34,7 +34,7 @@ var friendsArray = [
     },
     {
         name: "Greg Botlink",
-        photo: "",
+        photo: "https://thumbs.dreamstime.com/z/happy-senior-business-man-smiling-portrait-45140025.jpg",
         scores: [
             "3",
             "5",
@@ -50,7 +50,7 @@ var friendsArray = [
     },
     {
         name: "Gina Hernandez",
-        photo: "",
+        photo: "https://previews.123rf.com/images/daynamore/daynamore1206/daynamore120600029/13940086-pretty-young-woman-laughing.jpg",
         scores: [
             "3",
             "1",
@@ -66,7 +66,7 @@ var friendsArray = [
     },
     {
         name: "Salman Patel",
-        photo: "",
+        photo: "https://cdn7.dissolve.com/p/D145_27_779/D145_27_779_1200.jpg",
         scores: [
             "3",
             "5",
@@ -108,13 +108,19 @@ app.post("/api/friends", function(req, res){
     console.log(newFriend);
 
     res.json(newFriend);
+});
+
+//Get Suggestion
+app.get("/survey/suggested", function(req, res){
+    
+    let latestFriend = friendsArray[friendsArray.length-1];
     
     //Find the difference between the scores of new friend just entered and 
     //the scores of all previous friends already in the API.
     function findDifference(compareFriend) {
         let differenceArray = [];
-        for(let i=0; i<newFriend.scores.length; i++){
-        let difference = Math.abs(newFriend.scores[i] - compareFriend.scores[i]);
+        for(let i=0; i<latestFriend.scores.length; i++){
+        let difference = Math.abs(latestFriend.scores[i] - compareFriend.scores[i]);
         differenceArray.push(difference);  
         }
         let totalDifference = 0;
@@ -140,7 +146,7 @@ app.post("/api/friends", function(req, res){
     //Function to find the difference number that is the least in scoresArray
     function findWinningScore(){
         let smallestscore = scoresArray[0];
-        for (let l = 0; l<=scoresArray.length; l++){
+        for (let l = 0; l<=scoresArray.length-1; l++){
             if(smallestscore>scoresArray[l]){
             smallestscore = scoresArray[l];
             }
@@ -161,7 +167,10 @@ app.post("/api/friends", function(req, res){
         }
     };
     console.log(displayWinner());
+    let data = displayWinner();
+    res.json(data);
 });
+
 
 //Start server to begin listening
 //==========================================

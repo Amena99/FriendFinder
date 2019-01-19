@@ -155,7 +155,8 @@
                 <hr>
                 <div class="text-right">
                   <button type="submit" class="btn btn-primary btn-md" id="submit" data-toggle="modal" data-target="#friendmodal">
-                    <span class="fa fa-fire"></span>Submit</button>
+                    <span class="fa fa-fire"></span>Submit My Profile</button>
+                   
                 </div>
                 </div>
             </div>
@@ -176,15 +177,45 @@
                 </ul>
                 </div>
                 <div class="modal-footer">
-                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-secondary" id="display-friend">Display Suggested Friend</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                 </div>
               </div>
             </div>
           </div>
+    
+    <div class="modal fade" id="friendmodal2" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Friend Finder</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body2" id="modal-body2">
+                <div class="card">
+                    <div class="card-header">
+                        <h3><strong>Your Suggested Friend:</strong></h3>
+                    </div>
+                    <div class="card-body" id="friend-result">
+                        <h5 id="modal2-message"></h5>
+                        <h3 id="name"></h3>
+                        <div id="friend-picture">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+            </div>
+        </div>
+        </div>
 
     </div>
     <script type="text/javascript">
-        // Question: What does this code do?
+        // Submit button 
         $("#submit").on("click", function(event) {
           event.preventDefault();
     
@@ -197,14 +228,38 @@
         $.post("/api/friends", newFriend)
             .then(function(data) {
             console.log(data);
-            var friendMatch = $("<li class='list-group-item'>");
-            friendMatch.append($("<h2>").text("Name: "+ data.name));
             
-            $("#modalbody").html(friendMatch);
-               
+            let modal1Mssg = `Welcome, ${newFriend.name}! You've been added to Friend Finder! Click below to find our suggested friend for you.`
+            $("#modalbody").html(modal1Mssg);
         });
-            });
+        });
         
+        $("#display-friend").on("click", function(event) {
+            event.preventDefault();
+            $("#friendmodal2").modal("show");
+            $("#friendmodal").modal("hide");
+            $.ajax({ url: "/survey/suggested", method: "GET"})
+                .then(function(data){
+                    console.log("name" + data.name + " photo" + data.photo);
+                        if (data) {
+                            let modal2Mssg = `We suggest the following friend for you: ${data.name}!`
+                            $("#modal2-message").html(modal2Mssg);
+                            $("#name").html(data.name);
+                            let friendPic = $(`<img src= "${data.photo}" alt="${data.name} width="200px" height="200px">`);
+                            $("#friend-picture").html(friendPic);
+                        }
+                        else {
+                        $("#name").text("The force is not strong with this one. Your character was not found.");
+                        }
+                });  
+        });
+       
+    
+    // var friendMatch = $("<li class='list-group-item'>");
+    // friendMatch.append($("<h2>").text("Name: "+ data[2].name));
+    
+    // $("#modalbody").html(friendMatch);
+
         
     
       </script>

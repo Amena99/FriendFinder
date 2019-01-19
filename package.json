@@ -1,7 +1,7 @@
 {
   "name": "friendfinder",
   "version": "1.0.0",
-  "description": "",
+  "description": "This APP matches the user with a friend that best matches their personality.",
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -12,5 +12,14 @@
   "dependencies": {
     "express": "^4.16.4",
     "path": "^0.12.7"
-  }
+  },
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Amena99/FriendFinder.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Amena99/FriendFinder/issues"
+  },
+  "homepage": "https://github.com/Amena99/FriendFinder#readme"
 }
